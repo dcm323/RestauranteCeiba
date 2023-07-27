@@ -30,9 +30,9 @@ public class Menu {
     private String category;
 
     @Column(name="state", nullable = false)
-    private Boolean state;
+    private Boolean state =true;
 
-    @Column(name="local")
+    @Column(name="local", nullable = false)
     private String local;
 
     @Column(name="eta")

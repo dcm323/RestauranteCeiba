@@ -3,7 +3,7 @@ package com.example.Restaurante.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name="orders")
+@Table (name="order")
 public class Order {
 
     @Id
@@ -20,12 +20,7 @@ public class Order {
     @Column(name = "state", nullable = false)
     private String state;
 
-    public Order(Integer order, Character role, String local, String state) {
-        this.order = order;
-        this.role = role;
-        this.local = local;
-        this.state = state;
-    }
+
 
     public Integer getOrder() {
         return order;
@@ -59,5 +54,10 @@ public class Order {
         this.state = state;
     }
 
-
+    public Order(Integer order, Character role, String local, String state) {
+        this.order = order;
+        this.role = role;
+        this.local = local;
+        this.state = state;
+    }
 }
