@@ -3,13 +3,13 @@ package com.example.Restaurante.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table (name="order")
+@Table (name="orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order", nullable = false)
-    private Integer order;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @Column(name = "role", nullable = false)
     private Character role;
@@ -21,13 +21,12 @@ public class Order {
     private String state;
 
 
-
     public Integer getOrder() {
-        return order;
+        return id;
     }
 
     public void setOrder(Integer order) {
-        this.order = order;
+        this.id = order;
     }
 
     public Character getRole() {
@@ -54,8 +53,11 @@ public class Order {
         this.state = state;
     }
 
+    public Order() {
+    }
+
     public Order(Integer order, Character role, String local, String state) {
-        this.order = order;
+        this.id = order;
         this.role = role;
         this.local = local;
         this.state = state;

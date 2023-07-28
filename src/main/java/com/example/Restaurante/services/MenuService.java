@@ -18,7 +18,7 @@ public class MenuService {
     @Autowired
     MenuValidation validation;
     @Autowired
-    MenuRepository repository;
+    MenuRepository menuRepository;
     @Autowired
     MenuMap map;
 
@@ -32,10 +32,40 @@ public class MenuService {
                 throw new Exception("You must add a local first");
             }
 
-            return map.TransformMenu(repository.save(registerMenuData));
+            return map.TransformMenu(menuRepository.save(registerMenuData));
 
     }catch(Exception error){
         throw new Exception(error.getMessage());
+        }
+    }
+
+    public MenuResponseDTO updateInfo(Menu editMenuData, Integer idMenu) throws Exception {
+        try {
+
+            if (editMenuData.getRole() != ('A')) {
+                throw new Exception("El ROL no esta autorizado para registrar un plato");
+            }
+
+            Optional<Menu> MenuOptional = menuRepository.findById(idMenu);
+            if (MenuOptional.isEmpty()) { //si el plato no existe en BD
+                throw new Exception("El plato no existe");
+            }
+
+            Menu platoExistente = MenuOptional.get();
+
+            if (editMenuData.getPrice() != null) {
+                platoExistente.setPrice(editMenuData.getPrice());
+            }
+            if (editMenuData.getLocal() != null) {
+                platoExistente.setLocal(editMenuData.getLocal());
+            }
+            if (editMenuData.getDescription() != null) {
+                platoExistente.setDescription(editMenuData.getDescription());
+            }
+
+            return map.TransformMenu(menuRepository.save(platoExistente));
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
         }
     }
 
@@ -44,7 +74,7 @@ public class MenuService {
             throw new Exception("You can´t do that");
         }
 
-        Optional<Menu> menuOptional=repository.findById(idMenuEdit);
+        Optional<Menu> menuOptional=menuRepository.findById(idMenuEdit);
         if(!menuOptional.isPresent()){
             throw new Exception("not found");
         }
@@ -52,9 +82,9 @@ public class MenuService {
         Menu menuFound=menuOptional.get();
         menuFound.setState(editMenuData.getState());
 
-        Menu menuUpdate=repository.save(menuFound);
+        Menu menuUpdate=menuRepository.save(menuFound);
 
-        return  map.TransformMenu(repository.save(menuUpdate));
+        return  map.TransformMenu(menuRepository.save(menuUpdate));
 
 
     }catch(Exception error){
@@ -68,9 +98,9 @@ public Page<MenuResponseDTO> obtainMenuLocalCategory(String category, String loc
 
             Pageable Pagerli= PageRequest.of(0, registernumbers);
 
-            Page<Menu> menuPagerFinded=repository.findByCategoryAndLocal(category,local,Pagerli);
+            Page<Menu> menuPagerFinded=menuRepository.findByCategoryAndLocal(category,local,Pagerli);
 
-            return null;
+            return menuPagerFinded.map(Menu -> map.TransformMenu(Menu));
 
         }catch(Exception error){
             throw new Exception(error.getMessage());
