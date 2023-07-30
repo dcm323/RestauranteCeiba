@@ -1,6 +1,9 @@
 package com.example.Restaurante.entities;
 
+import com.example.Restaurante.util.OrderState;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table (name="orders")
@@ -17,8 +20,14 @@ public class Order {
     @Column(name = "local", nullable = false)
     private String local;
 
-    @Column(name = "state", nullable = false)
-    private String state;
+    @Enumerated(EnumType.STRING)
+    @Column(name="stateorder")
+    private OrderState status=OrderState.PENDING;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pedido_id")
+    private List<OrderDetail> details;
+
 
 
     public Integer getOrder() {
@@ -45,21 +54,39 @@ public class Order {
         this.local = local;
     }
 
-    public String getState() {
-        return state;
+    public List<OrderDetail> getDetails() {
+        return details;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setDetails(List<OrderDetail> details) {
+        this.details = details;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public OrderState getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderState status) {
+        this.status = status;
     }
 
     public Order() {
     }
 
-    public Order(Integer order, Character role, String local, String state) {
-        this.id = order;
+
+    public Order(Integer id, Character role, String local, OrderState status, List<OrderDetail> details) {
+        this.id = id;
         this.role = role;
         this.local = local;
-        this.state = state;
+        this.status = status;
+        this.details = details;
     }
 }
