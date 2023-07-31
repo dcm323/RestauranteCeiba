@@ -1,13 +1,21 @@
 package com.example.Restaurante.dtos;
 
-public class OrderResponseDTO extends OrderDTO{
+import com.example.Restaurante.util.OrderState;
+
+import java.util.List;
+
+public class OrderResponseDTO extends OrderDTO {
 
     private String local;
-    private String state;
+    private OrderState status;
+    private Integer id;
+    private List<OrderDetailDTO> details;
 
-    public OrderResponseDTO(String local, String state) {
+    public OrderResponseDTO(String local, OrderState status, Integer id, List<OrderDetailDTO> details) {
         this.local = local;
-        this.state = state;
+        this.status = status;
+        this.id = id;
+        this.details = details;
     }
 
     public String getLocal() {
@@ -18,11 +26,28 @@ public class OrderResponseDTO extends OrderDTO{
         this.local = local;
     }
 
-    public String getState() {
-        return state;
+    public OrderState getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(OrderState status) {
+        this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public List<OrderDetailDTO> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<OrderDetailDTO> details) {
+        this.details = details;
     }
 }
+
