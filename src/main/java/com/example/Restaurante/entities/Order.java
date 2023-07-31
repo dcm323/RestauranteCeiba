@@ -25,7 +25,7 @@ public class Order {
     private OrderState status=OrderState.PENDING;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "order_id")
     private List<OrderDetail> details;
 
 
