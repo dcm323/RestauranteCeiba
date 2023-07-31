@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 
-    Page<Order> findByLocalStatus(String local, OrderState status, Pageable pager);
+    Page<Order> findByLocalAndStatus(String local, OrderState status, Pageable pager);
 }
 

@@ -21,11 +21,11 @@ import java.util.Optional;
 public class OrderService {
 
     @Autowired
-    OrderMap pedidoMapa;
+    OrderMap OrderMap;
     @Autowired
-    OrderRepository pedidoRepositorio;
+    OrderRepository OrderRepository;
     @Autowired
-    MenuRepository platoRepositorio;
+    MenuRepository MenuRepositoriy;
 
     public OrderResponseDTO crearPedido(Order datosDelPedido) throws Exception{
         try{
@@ -37,10 +37,10 @@ public class OrderService {
             //recorro el detalle del pedido (todos los productos que eligio el cliente)
             for (OrderDetail details : datosDelPedido.getDetails()) {
                 Integer idPlate = details.getPlate().getId(); //cada plato en el detalle tiene un id
-                Optional<Menu> menuOptional = platoRepositorio.findById(idPlate); //buscamos el plato en cuestion
+                Optional<Menu> menuOptional = MenuRepositoriy.findById(idPlate); //buscamos el plato en cuestion
                 details.getPlate().setName(menuOptional.get().getName()); //llevamos el nombre del plato a lo que vamos a guardar
             }
-            return pedidoMapa.transformOrder(pedidoRepositorio.save(datosDelPedido)); //guardamos el pedido
+            return OrderMap.transformOrder(OrderRepository.save(datosDelPedido)); //guardamos el pedido
         }catch (Exception error){
             throw new Exception(error.getMessage());
         }
@@ -51,8 +51,8 @@ public class OrderService {
 
 
             Pageable pager = PageRequest.of(0, numerodeRegistros);
-            Page<Order> ordersPaged=pedidoRepositorio.findByLocalStatus(local,status,pager);
-            return ordersPaged.map(order -> pedidoMapa.transformOrder(order));
+            Page<Order> ordersPaged= OrderRepository.findByLocalAndStatus(local,status,pager);
+            return ordersPaged.map(order -> OrderMap.transformOrder(order));
         }catch (Exception error){
             throw new Exception(error.getMessage());
         }
@@ -62,13 +62,13 @@ public class OrderService {
         try{
             //solo el Admin A puede cambiar el estado
 
-            Optional<Order> pedidoOpcional = pedidoRepositorio.findById(idPedido);
+            Optional<Order> pedidoOpcional = OrderRepository.findById(idPedido);
             if (pedidoOpcional.isEmpty()) {
                 throw new Exception("El pedido no existe");
             }
             Order pedidoExistente = pedidoOpcional.get();
             pedidoExistente.setStatus(OrderState.IN_PROCESS);
-            return pedidoMapa.transformOrder(pedidoRepositorio.save(pedidoExistente));
+            return OrderMap.transformOrder(OrderRepository.save(pedidoExistente));
         }catch (Exception error){
             throw new Exception(error.getMessage());
         }

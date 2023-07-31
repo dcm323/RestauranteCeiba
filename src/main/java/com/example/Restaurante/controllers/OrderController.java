@@ -19,14 +19,14 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderService pedidoServicio;
+    OrderService orderService;
 
     @PostMapping
     public ResponseEntity<OrderDTO> registrar(@RequestBody Order order){
         try{
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(pedidoServicio.crearPedido(order));
+                    .body(orderService.crearPedido(order));
         }catch(Exception error){
             OrderErrorDTO respuestaError = new OrderErrorDTO();
             respuestaError.setErrorMsg(error.getMessage());
@@ -38,12 +38,13 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity <List<OrderResponseDTO>> obtenerPlatosPaginadosYFiltrados(
-            @RequestParam() OrderState state,
+            @RequestParam() Character role,
+            @RequestParam() OrderState category,
             @RequestParam() String local,
             @RequestParam() int numerodeRegistros
     ){
         try {
-            Page<OrderResponseDTO> edidosPaginados = pedidoServicio.obtenerListaPedidosPorEstadoYSede(state, local, numerodeRegistros);
+            Page<OrderResponseDTO> edidosPaginados = orderService.obtenerListaPedidosPorEstadoYSede(role, local, category, numerodeRegistros);
             List<OrderResponseDTO> listapedidos = edidosPaginados.getContent();
             return ResponseEntity
                     .status(HttpStatus.OK)
@@ -60,7 +61,7 @@ public class OrderController {
         try{
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(pedidoServicio.actualizarPedidoAEnPreparacion(id,datosPedido));
+                    .body(orderService.actualizarPedidoAEnPreparacion(id,datosPedido));
         }catch(Exception error){
             OrderErrorDTO respuestaError= new OrderErrorDTO();
             respuestaError.setErrorMsg(error.getMessage());
