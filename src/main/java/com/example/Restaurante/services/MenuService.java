@@ -102,9 +102,15 @@ public MenuResponseDTO acuatualizarEstado(Menu menudata, Integer id) throws Exce
         }
 
         Menu menuFound=menuOptional.get();
+<<<<<<< HEAD
 
         menuFound.setState(editMenuData.getState());
 
+=======
+        if (editMenuData.getState() != null) {
+            menuFound.setState(editMenuData.getState());
+        }
+>>>>>>> e48d4472bd800bec2580021b2a592649847dc4bd
         Menu menuUpdate=menuRepository.save(menuFound);
 
 
