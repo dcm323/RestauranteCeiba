@@ -38,6 +38,22 @@ public class Menu {
     @Column(name="eta")
     private Double eta;
 
+    public Menu() {
+    }
+
+    public Menu(Integer id, Character role, String name, Integer price, String description, String url, String category, Boolean state, String local, Double eta) {
+        this.id = id;
+        this.role = role;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.url = url;
+        this.category = category;
+        this.state = state;
+        this.local = local;
+        this.eta = eta;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -118,16 +134,5 @@ public class Menu {
         this.eta = eta;
     }
 
-    public Menu(Integer id, Character role, String name, Integer price, String description, String url, String category, Boolean state, String local, Double eta) {
-        this.id = id;
-        this.role = role;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.url = url;
-        this.category = category;
-        this.state = state;
-        this.local = local;
-        this.eta = eta;
-    }
+
 }

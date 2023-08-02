@@ -49,7 +49,7 @@ public class MenuController {
         }
     }
 
-    @PutMapping("/estado/{id}")
+    @PutMapping("/state/{id}")
     public ResponseEntity<MenuDTO> updateStatus(@PathVariable Integer id, @RequestBody Menu menuDataClient){
         try{
             return ResponseEntity

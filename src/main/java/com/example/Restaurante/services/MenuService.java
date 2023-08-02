@@ -80,8 +80,9 @@ public class MenuService {
         }
 
         Menu menuFound=menuOptional.get();
-        menuFound.setState(editMenuData.getState());
-
+        if (editMenuData.getState() != null) {
+            menuFound.setState(editMenuData.getState());
+        }
         Menu menuUpdate=menuRepository.save(menuFound);
 
         return  map.TransformMenu(menuRepository.save(menuUpdate));
@@ -93,6 +94,8 @@ public class MenuService {
 
 
 }
+
+
 public Page<MenuResponseDTO> obtainMenuLocalCategory(String category, String local,Integer registernumbers) throws Exception{
         try{
 
