@@ -1,5 +1,6 @@
 package com.example.Restaurante.services;
 
+import com.example.Restaurante.dtos.MenuDTO;
 import com.example.Restaurante.dtos.MenuResponseDTO;
 import com.example.Restaurante.entities.Menu;
 import com.example.Restaurante.maps.MenuMap;
@@ -11,10 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class MenuService {
+public class  MenuService {
     @Autowired
     MenuValidation validation;
     @Autowired
@@ -69,6 +71,26 @@ public class MenuService {
         }
     }
 
+public MenuResponseDTO acuatualizarEstado(Menu menudata, Integer id) throws Exception {
+        try {
+            if (menudata.getRole()!=('A')){
+                throw new Exception("El rol no esta autorizado para cambiar el estado del plato");
+            }
+            Optional<Menu>menuOptional=menuRepository.findById(id);
+            if (menuOptional.isEmpty()){
+                throw new Exception("El plato no exixte");
+            }
+            Menu menuExist = menuOptional.get();
+            if (menudata.getState()!=null){
+                menuExist.setState(menudata.getState());
+            }
+            return map.TransformMenu(menuRepository.save(menuExist));
+        }catch (Exception error){
+            throw new Exception(error.getMessage());
+        }
+}
+
+
     public MenuResponseDTO updateStatus(Menu editMenuData,Integer idMenuEdit)throws Exception{try {
         if(!editMenuData.getRole().equals('A')){
             throw new Exception("You can´t do that");
@@ -80,9 +102,13 @@ public class MenuService {
         }
 
         Menu menuFound=menuOptional.get();
+
         menuFound.setState(editMenuData.getState());
 
         Menu menuUpdate=menuRepository.save(menuFound);
+
+
+        //
 
         return  map.TransformMenu(menuRepository.save(menuUpdate));
 
@@ -90,9 +116,9 @@ public class MenuService {
     }catch(Exception error){
         throw new Exception(error.getMessage());
     }
-
-
 }
+
+
 public Page<MenuResponseDTO> obtainMenuLocalCategory(String category, String local,Integer registernumbers) throws Exception{
         try{
 

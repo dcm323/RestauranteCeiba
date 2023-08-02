@@ -49,7 +49,7 @@ public class MenuController {
         }
     }
 
-    @PutMapping("/estado/{id}")
+    @PutMapping("/state/{id}")
     public ResponseEntity<MenuDTO> updateStatus(@PathVariable Integer id, @RequestBody Menu menuDataClient){
         try{
             return ResponseEntity
@@ -64,6 +64,22 @@ public class MenuController {
         }
     }
 
+    /*
+    @PutMapping("/state/{id}")
+    public ResponseEntity<MenuDTO>actualizarEstado(@PathVariable Integer id,@RequestBody Menu dataClient){
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(service.acuatualizarEstado(dataClient,id));
+        }catch (Exception error){
+            MenuErrorDTO responseError = new MenuErrorDTO();
+            responseError.setErrorMsg(error.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(responseError);
+        }
+    }
+*/
 
     @GetMapping
     public ResponseEntity <List<MenuResponseDTO>> obtenerPlatosPaginadosYFiltrados(
